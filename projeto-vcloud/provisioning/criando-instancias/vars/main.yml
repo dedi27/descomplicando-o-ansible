@@ -1,0 +1,19 @@
+---
+# vars file for provisioning
+host: vcloud.unifique.com.br
+api_version: 35
+verify_ssl_certs: False
+user: ansible
+password: @n3O6FCyOACQ
+org: UNIFIQUE_DATACENTER_ORG
+vdc: UNIFIQUE_DATACENTERHOMOLOG_VDC-DC-TIO-02
+vm_name: vm-01
+vm_name_prefix: vm
+vapp_name: "vapp1"
+source_template_name: TEMPLATE_ALMALINUX
+hostname: vm
+hostname_prefix: vm
+vmpassword: 
+network: VLAN-DC-HOMOLOG
+storage_profile: VCLOUD-T2
+network_cidr: 192.168.1.1/24
