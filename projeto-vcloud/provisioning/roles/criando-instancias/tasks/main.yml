@@ -1,4 +1,5 @@
 ---
 # tasks file for provisioning
+#- include: edge.yml
 - include: network.yml
-- include: instances.yml
+#- include: instances.yml

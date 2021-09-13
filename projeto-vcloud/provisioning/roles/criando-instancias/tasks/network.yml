@@ -1,0 +1,26 @@
+- name: criar a rede interna do vdc
+  vcd_vdc_network:
+    user: "{{ vcd_user }}"
+    password: "{{ vcd_password }}"
+    host: "{{ vcd_host }}"
+    api_version: "{{ api_version }}"
+    verify_ssl_certs: "{{ verify_ssl_certs }}"
+    org: "{{ org }}"
+    vdc_name: "{{ vdc }}"
+    gateway_name: "{{ edge_name }}"
+    network_name: "{{ edge_local_network_name }}"
+    description: "{{ edge_local_network_desc }}"
+    parent_network_name: "{{ edge_ext_network_name }}"
+    primary_dns_ip: "{{ edge_local_network_dns1 }}"
+    network_cidr: "{{ edge_local_network_cidr }}"
+    secondary_dns_ip: "{{ edge_local_network_dns2 }}"
+    ip_range_start: "{{ edge_local_network_start}}"
+    ip_range_end: "{{ edge_local_network_end }}"
+    shared: "{{ edge_local_network_shared }}"
+    routed: True
+    state: "present"
+  register: output
+
+- name: Logs - criando uma rede isolada no vdc
+  debug:
+    msg: '{{ output }}'
