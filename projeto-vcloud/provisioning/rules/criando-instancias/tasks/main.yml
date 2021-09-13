@@ -1,0 +1,4 @@
+---
+# tasks file for provisioning
+- include: network.yml
+- include: instances.yml

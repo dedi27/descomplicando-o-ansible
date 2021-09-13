@@ -1,8 +1,9 @@
 ---
 # vars file for provisioning
+instances_count: 2
 host: vcloud.unifique.com.br
 api_version: 35
-verify_ssl_certs: False
+verify_ssl_certs: True
 user: ansible
 password: @n3O6FCyOACQ
 org: UNIFIQUE_DATACENTER_ORG
@@ -14,6 +15,13 @@ source_template_name: TEMPLATE_ALMALINUX
 hostname: vm
 hostname_prefix: vm
 vmpassword: 
-network: VLAN-DC-HOMOLOG
-storage_profile: VCLOUD-T2
+local_network: VLAN-DC-HOMOLOG
+local_network_desc: "rede local do VDC"
 network_cidr: 192.168.1.1/24
+edge_name: UNIFIQUE_DATACENTERHOMOLOG_EG
+edge_size: compact
+edge_ip: 187.85.164.15
+edge_default_gateway: 187.85.164.1
+edge_ha: False
+edge_dr_enabled: False
+storage_profile: VCLOUD-T2
