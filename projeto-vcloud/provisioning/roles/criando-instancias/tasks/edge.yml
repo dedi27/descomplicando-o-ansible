@@ -1,0 +1,31 @@
+- name: criando o edge gateway
+  vcd_vdc_gateway:
+    description: "Edge criado pelo Ansible"
+    org_name: {{ org }}
+    vdc_name: {{ vdc }}
+    gateway_name: {{ edge_name }}
+    gateway_backing_config: {{ edge_size }}
+    default_gateway: True
+    default_gateway_ip: 10.221.10.161
+    ha_enabled: {{ edge_ha }}
+    dr_enabled: {{ edge_dr_enabled }}
+    external_networks:
+      - "VLAN3020"
+    ext_net_to_rate_limit: {
+        "VLAN3020": {
+            "100": "100"
+        }
+    ext_net_subnet_allocated_ip_pool: {
+        "network_name": "10.221.10.170-10.221.10.171"
+    }
+    ext_net_to_participated_subnet_with_ip_settings: {
+        "VLAN3020": {
+            "10.221.10.161/27": "10.221.10.170"
+        }
+    }
+    state: present
+  register: output-edge
+
+- name: Logs - criando o edge gateway
+  debug:
+    msg: '{{ output-edge }}'

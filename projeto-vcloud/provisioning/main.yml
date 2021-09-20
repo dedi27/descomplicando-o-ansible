@@ -1,0 +1,12 @@
+---
+- name: vCloudDirectorAnsible
+  hosts: localhost
+  environment:
+    env_user: ansible
+    env_password: BikYpCcbAQzV
+    env_host: vcloud.unifique.com.br
+    env_org: UNIFIQUE_DATACENTER_ORG
+    env_api_version: 35.0
+    env_verify_ssl_certs: True
+  roles:
+  - criando-instancias
