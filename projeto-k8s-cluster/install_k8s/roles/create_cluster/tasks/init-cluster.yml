@@ -4,20 +4,47 @@
     kubeadm reset --force
   register: kubeadm_reset
 
+- name: Baixando as imagens do Kubernetes
+  shell:
+    cmd: kubeadm config images pull --kubernetes-version={{ kubernetes_version }}
+
+- name: Iniciando o servico do Docker
+  service:
+    name: docker
+    state: started
+
+# https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/
+- name: Verificando Driver do Cgroup utilizado pelo Docker
+  shell:
+    cmd: docker info | grep "Cgroup Driver" | awk '{ print $3}'
+  register: cgroup_driver
+
+- name: Copiando o tempalte do arquivo de configuracao do Kubeadm
+  template:
+    src: ../templates/kubeadm-config.yaml.j2
+    dest: /root/kubeadm-config.yaml
+
+- name: Ajustando o Driver do Cgroup do arquivo de configuração do Kubeadm
+  replace:
+    path: /root/kubeadm-config.yaml
+    regexp: '^cgroupDriver: .+$'
+    replace: 'cgroupDriver: {{ cgroup_driver.stdout }}'
+
 - name: Inicializando o cluster Kubernetes
   command:
-    kubeadm init
+    kubeadm init --config /root/kubeadm-config.yaml
   register: kubeadm_init
 
 - name: Criando o diretório .kube
   file:
     path: ~/.kube
+    mode: '0755'
     state: directory
 
 - name: Criando link simbolico do arquivo admin.conf para o dir ~/.kube/config
   file:
     src: /etc/kubernetes/admin.conf
-    dst: ~/.kube/config
+    dest: ~/.kube/config
     state: link
 
 - name: Configurando o pod network Weavenet
@@ -26,7 +53,7 @@
   register: weavenet_result
 
 - name: Obtendo o token para adicionar os workers no cluster
-  shell: kubeadm token list | cut -d '' -f1 | sed -n '2p'
+  shell: kubeadm token list | cut -d ' ' -f1  | sed -n '2p'
   register: k8s_token
 
 - name: CA Hash

@@ -1,10 +1,10 @@
 ---
 - name: Instalando o Docker
-  shell:
+  shell: 
     cmd: curl -fsSL https://get.docker.com | bash
 
 - name: Adicionando as chaves do repo apt do Kubernetes
-  apk_key:
+  apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
 
@@ -14,7 +14,7 @@
 
 - name: Instalando os pacotes Kubeadm Kubelet e Kubectl
   apt:
-    name: "{ packages }"
+    name: "{{ packages }}"
   vars:
     packages:
     - kubelet
